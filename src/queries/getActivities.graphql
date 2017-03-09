@@ -1,0 +1,35 @@
+query getActivities {
+  activities {
+    bookingid
+    freeslots
+    totalslots
+    id
+    start {
+      timepoint {
+        date
+        timestamp
+        time
+      }
+    }
+    end {
+      timepoint {
+        date
+        timestamp
+        time
+      }
+    }
+    resources {
+      name
+      type
+    }
+    participants {
+      firstname
+      id
+      lastname
+    }
+    product {
+      id
+      name
+    }
+  }
+}
