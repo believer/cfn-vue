@@ -24,7 +24,9 @@ export const getTypeOfWorkout = (id) => {
 const setProps = R.curry((item, newProps) => Object.assign({}, item, newProps))
 
 // Group
-const groupByDate = (activity) => activity.start.timepoint.date
+const groupByDate = ({ start }) => start.timepoint.date
+const groupByMonth = ({ timepoint }) => timepoint.date.substr(5, 2)
+const groupByYear = ({ timepoint }) => timepoint.date.substr(0, 4)
 
 // Sort
 const sortByLastname = (a, b) => a.lastname.localeCompare(b.lastname, 'sv')
@@ -52,3 +54,45 @@ export const groupActivities = (filter) => R.compose(
   R.filter(upcomingActivities),
   R.filter(({ product }) => product.name.toLowerCase().indexOf(filter) > -1)
 )
+
+export const groupedWorkouts = R.compose(
+  R.map(R.groupBy(groupByMonth)),
+  R.groupBy(groupByYear)
+)
+
+export const chartStatistics = R.compose(
+  R.map(R.map(R.length)),
+  groupedWorkouts
+)
+
+export const workoutStatistics = (workouts) => {
+  const years = chartStatistics(workouts)
+
+  const colors = {
+    '2014': '#ffdb4d',
+    '2015': '#00b300',
+    '2016': '#0085ca',
+    '2017': '#ff3900'
+  }
+
+  const mappedYears = new Map()
+  const months = [...Array(12).keys()].map(v => {
+    if (v + 1 < 10) { return `0${v + 1}` }
+    return `${v + 1}`
+  })
+  Object.keys(years).map(year => mappedYears.set(year, months))
+
+  const chartData = []
+
+  mappedYears.forEach((months, year) => {
+    const workouts = months.map(month => years[year][month] || 0)
+
+    chartData.push({
+      label: year,
+      backgroundColor: colors[year] || '#000',
+      data: workouts
+    })
+  })
+
+  return chartData
+}
