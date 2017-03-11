@@ -1,0 +1,168 @@
+/*------------------------------------------------------------
+// Activities
+//
+//----------------------------------------------------------*/
+:root {
+  --mustard: #ffdb4d;
+  --green: #00b300;
+  --lochmara: #0085ca; /* rgb(0, 133, 202) */
+  --vermillion: #ff3900;
+}
+
+.list {
+  color: rgba(36, 41, 46, 1);
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.activities {
+  margin-bottom: 20px;
+}
+
+.activity {
+  border-bottom: 1px solid #efefef;
+  font-size: 14px;
+  transition: opacity 200ms, transform 300ms;
+}
+
+.activity-meta {
+  align-items: center;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  display: grid;
+  grid-template-areas: "time name coach slots";
+  grid-template-columns: 120px 1fr 1fr 100px;
+  grid-template-rows: auto;
+  padding: 10px;
+
+  &:hover {
+    background-color: rgba(0, 133, 202, 0.05);
+  }
+
+  &.dagens {
+    border-left-color: var(--mustard);
+  }
+
+  &.fitness {
+    border-left-color: var(--green);
+  }
+
+  &.performance {
+    border-left-color: var(--lochmara);
+  }
+
+  &.intro {
+    border-left-color: rgb(36, 41, 46);
+  }
+}
+
+.time {
+  color: rgba(36, 41, 46, 0.6);
+  font-size: 14px;
+  grid-area: time;
+}
+
+.name {
+  font-weight: 600;
+  grid-area: name;
+}
+
+.coach {
+  font-size: 14px;
+  grid-area: coach;
+}
+
+.freeslots {
+  font-weight: 600;
+  grid-area: slots;
+  text-align: right;
+}
+
+.slots {
+  &.full {
+    color: var(--vermillion);
+  }
+
+  &.few {
+    color: var(--mustard);
+  }
+}
+
+.slots-text {
+  color: rgba(36, 41, 46, 0.5);
+  font-size: 12px;
+}
+
+.participants-wrap {
+  background-color: rgba(36, 41, 46, 0.02);
+  border-left: 3px solid rgba(36, 41, 46, 0.15);
+  border-top: 1px dashed rgba(36, 41, 46, 0.15);
+  font-size: 14px;
+  padding: 20px;
+}
+
+.participants {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-row-gap: 5px;
+}
+
+/*
+// Filters
+// ------------------------------------------------*/
+.filters {
+  display: flex;
+  font-size: 14px;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.filter {
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  padding-bottom: 3px;
+  transition: border-bottom-color 200ms ease-in-out;
+
+  &:not(:last-child) {
+    margin-right: 20px;
+  }
+
+  &:hover,
+  &.active {
+    border-bottom-color: rgba(36, 41, 46, 0.15);
+
+    &.intro {
+      border-bottom-color: rgb(36, 41, 46);
+    }
+
+    &.dagens {
+      border-bottom-color: var(--mustard);
+    }
+
+    &.fitness {
+      border-bottom-color: var(--green);
+    }
+
+    &.performance {
+      border-bottom-color: var(--lochmara);
+    }
+  }
+}
+
+/*
+// Animation
+// ------------------------------------------------*/
+.list-enter, .list-leave-active {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.list-leave-active {
+  position: absolute;
+}

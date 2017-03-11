@@ -1,16 +1,4 @@
-const isFunction = (o) => toString.call(o) == '[object Function]'
-
-export const dateGroup = (item) => item.start.timepoint.date
-
-export const groupBy = (prop) => (list) =>
-  list.reduce((grouped, item) => {
-    const key = isFunction(prop) ? prop.apply(this, [item]) : item[prop]
-
-    grouped[key] = grouped[key] || []
-    grouped[key].push(item)
-
-    return grouped
-  }, {})
+import R from 'ramda'
 
 export const getTypeOfWorkout = (id) => {
   switch (id) {
@@ -23,9 +11,44 @@ export const getTypeOfWorkout = (id) => {
       return 'tryout'
     case 225:
     case 227:
+    case 228:
+    case 229:
     case 241:
       return 'intro'
     default:
       return 'dagens'
   }
 }
+
+// General helpers
+const setProps = R.curry((item, newProps) => Object.assign({}, item, newProps))
+
+// Group
+const groupByDate = (activity) => activity.start.timepoint.date
+
+// Sort
+const sortByLastname = (a, b) => a.lastname.localeCompare(b.lastname, 'sv')
+
+// Filters
+const upcomingActivities = ({ start }) => start.timepoint.timestamp * 1000 - new Date().getTime() > 0
+
+// Set values
+const findCoach = (activity) => setProps(activity, {
+  coach: activity.resources.filter(({ type }) => type === 'Personal')[0].name
+})
+
+const sortParticipants = (activity) => setProps(activity, {
+  participants: activity.participants.slice().sort(sortByLastname)
+})
+
+/**
+ * Filter workouts and group them by date
+ * @param {string} filter
+ */
+export const groupActivities = (filter) => R.compose(
+  R.groupBy(groupByDate),
+  R.map(sortParticipants),
+  R.map(findCoach),
+  R.filter(upcomingActivities),
+  R.filter(({ product }) => product.name.toLowerCase().indexOf(filter) > -1)
+)

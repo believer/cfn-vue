@@ -8,7 +8,7 @@ Vue.config.productionTip = false
 
 const apolloClient = new ApolloClient({
   networkInterface: createNetworkInterface({
-    uri: 'http://localhost:4000/graphql',
+    uri: 'http://cfn-graphql.fc622284.svc.dockerapp.io:4000/graphql',
     transportBatching: true
   }),
   addTypename: true,
