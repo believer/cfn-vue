@@ -26,14 +26,14 @@
 </template>
 
 <script>
-import { getTypeOfWorkout } from '@/utils/helpers'
+import { typeOfWorkout } from '@/utils/helpers'
 
 export default {
   name: 'activity',
   props: ['activeId', 'activity', 'displayParticipants'],
   methods: {
     typeOfWorkout (activity) {
-      return getTypeOfWorkout(activity.product.id)
+      return typeOfWorkout(activity.product.id)
     }
   }
 }
