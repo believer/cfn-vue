@@ -1,0 +1,11 @@
+query getWorkouts {
+	workouts {
+    name
+    timepoint {
+      timestamp
+      datetime
+      date
+      time
+    }
+  }
+}
